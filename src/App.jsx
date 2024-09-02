@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import Form from "./Component/Form";
+import List from "./Component/List";
+import { uid } from "uid";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [activities, setActivities] = useState([]);
+  const [isGoodWeather, setIsGoodWeather] = useState(true);
+
+  useEffect(() => {
+    const storedActivities =
+      JSON.parse(localStorage.getItem("activities")) || [];
+    setActivities(storedActivities);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("activities", JSON.stringify(activities));
+  }, [activities]);
+
+  const handleAddActivity = (activity) => {
+    setActivities([...activities, activity]);
+  };
+
+  const filteredActivities = activities.filter(
+    (activity) => activity.isForGoodWeather === isGoodWeather
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      <Form onAddActivity={handleAddActivity} />
+      <List activities={filteredActivities} isGoodWeather={isGoodWeather} />
+    </div>
+  );
+};
 
-export default App
+export default App;
