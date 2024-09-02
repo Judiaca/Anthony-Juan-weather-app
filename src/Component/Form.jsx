@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+//TODO:
 const Form = ({ onAddActivity }) => {
   const [name, setName] = useState("");
   const [isForGoodWeather, setIsForGoodWeather] = useState(true);
@@ -7,7 +8,11 @@ const Form = ({ onAddActivity }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (name.trim()) {
-      onAddActivity({ name, isForGoodWeather, id: crypto.randomUUID() });
+      onAddActivity({
+        name: name,
+        isForGoodWeather: isForGoodWeather,
+        id: crypto.randomUUID(),
+      });
       setName("");
       setIsForGoodWeather(true);
     }

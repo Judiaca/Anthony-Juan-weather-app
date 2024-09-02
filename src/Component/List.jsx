@@ -1,6 +1,6 @@
 import React from "react";
 
-const List = ({ activities, isGoodWeather }) => {
+const List = ({ activities, isGoodWeather, onDeleteActivity }) => {
   return (
     <div>
       <h2>
@@ -9,7 +9,15 @@ const List = ({ activities, isGoodWeather }) => {
       <ul>
         {activities.length ? (
           activities.map((activity) => (
-            <li key={activity.id}>{activity.name}</li>
+            <li key={activity.id}>
+              {activity.name}
+              <button onClick={() => onDeleteActivity(activity.id)}>
+                Delete
+              </button>
+              {activity.isForGoodWeather
+                ? "is good Weather activity"
+                : "is bad Weather activity"}
+            </li>
           ))
         ) : (
           <li>No activities available</li>
