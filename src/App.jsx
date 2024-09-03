@@ -9,52 +9,58 @@ rules: {
 
 */
 }
-import React, { useState, useEffect } from 'react';
-import { uid } from 'uid';
-import { mockData, uiWeatherConditionText } from './assets/mockData';
-import { fetchData } from './helpers/helpers.js';
+import React, { useState, useEffect } from "react";
+import { uid } from "uid";
+import { mockData, uiWeatherConditionText } from "./assets/mockData";
+import { fetchData } from "./helpers/helpers.js";
 
-import Form from './Component/Form';
-import List from './Component/List';
+import Form from "./Component/Form";
+import List from "./Component/List";
+import SelectRegion from "./Component/SelectRegion";
+import Header from "./Component/Header";
+import { styledComponent } from "./theme.js";
 
-import './App.css';
+import "./App.css";
 
 const App = () => {
   const [activities, setActivities] = useState(
-    JSON.parse(localStorage.getItem('activities')) || mockData
+    JSON.parse(localStorage.getItem("activities")) || mockData
   );
 
-  console.log('activities', activities);
   const [filteredActivities, setFilteredActivities] = useState(activities);
-  console.log('filteredActivities', filteredActivities);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedLocation, setSelectedLocation] = useState(
+    "https://example-apis.vercel.app/api/weather/europe"
+  );
   const [weather, setWeather] = useState({});
-  const url = 'https://example-apis.vercel.app/api/weather/europe';
-
+  const selectedLocationString = selectedLocation.replace(
+    "https://example-apis.vercel.app/api/weather/",
+    ""
+  );
+  //useEffect(() => {
+  // read data from API when component mounted
   useEffect(() => {
-    // read data from API when component mounted
-    fetchData(url, setWeather);
+    fetchData(selectedLocation, setWeather);
 
     const intervalId = setInterval(() => {
-      fetchData(url, setWeather);
+      fetchData(selectedLocation, setWeather);
     }, 5000);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [selectedLocation]);
   useEffect(() => {
     const tempArrary = handleFilterActivities();
     setFilteredActivities(tempArrary);
-    return () => {};
-  }, [weather, activities]);
+  }, [weather, activities, selectedCategory]);
 
   useEffect(() => {
     if (activities?.length > 0) {
-      localStorage.setItem('activities', JSON.stringify(activities));
+      localStorage.setItem("activities", JSON.stringify(activities));
     } else {
-      localStorage.removeItem('activities');
+      localStorage.removeItem("activities");
     }
-    // const tempArrary = handleFilterActivities();
     // setFilteredActivities(tempArrary);
   }, [activities]);
 
@@ -62,9 +68,21 @@ const App = () => {
     setActivities([...activities, activity]);
   };
 
+  //isWorkOrPersonal
+  // const handleFilterActivities = () => {
+  //   if (selectedCategory === "All") {
+  //     return activities;
+  //   } else {
+  //     return activities.filter(
+  //       (activity) => activity.category === selectedCategory
+  //     );
+  //   }
+  // };
   const handleFilterActivities = () => {
     const updatedArray = activities.filter(
+      //     (activity) => activity.isForGoodWeather === weather.isGoodWeather
       (activity) => activity.isForGoodWeather === weather.isGoodWeather
+      // activity.isWorkOrPersonal === selectedCategory // Assuming you have filterCriteria object with isWorkOrPersonal property
     );
 
     return updatedArray;
@@ -75,38 +93,59 @@ const App = () => {
       (activity) => activity.id !== id
     );
     setActivities(updatedActivities);
-
-    // Update filteredActivities after deleting from activities
   };
 
-  //TODO: Toggle UI to Good/Bad Weather activity
   return (
-    <div>
+    <div style={styledComponent.body}>
+      <SelectRegion
+        setSelectedLocation={setSelectedLocation}
+        styledComponent={styledComponent}
+      />
       <div
         style={{
-          width: '100%',
-          display: 'flex',
-          flexFlow: 'row nowrap',
-          justifyContent: 'center',
+          ...styledComponent.flexBoxStyles,
+          height: "22rem",
+          flexFlow: "row nowrap",
         }}
       >
-        <p>{weather.condition}</p>
-        <p>{weather.temperature}°</p>
+        <div
+          style={{
+            ...styledComponent.flexBoxStyles,
+            height: "22rem",
+            flexFlow: "column nowrap",
+          }}
+        >
+          <Header
+            styledComponent={styledComponent}
+            weather={weather}
+            selectedLocationString={selectedLocationString}
+          />
+          <p style={styledComponent.subTitleStyles}>
+            {weather.isGoodWeather
+              ? uiWeatherConditionText.isGood
+              : uiWeatherConditionText.isBad}
+          </p>
+        </div>
+        <div
+          style={{ position: "absolute", top: 0, right: 0, maxWidth: "30ch" }}
+        >
+          <Form
+            onAddActivity={handleAddActivity}
+            styledComponent={styledComponent}
+          />
+        </div>
       </div>
-      <p>
-        {weather.isGoodWeather
-          ? uiWeatherConditionText.isGood
-          : uiWeatherConditionText.isBad}
-      </p>
-      <Form onAddActivity={handleAddActivity} />
+      <button onClick={() => setSelectedCategory(!selectedCategory)}>
+        {selectedCategory ? "work" : "personal"}
+      </button>{" "}
       <List
         activities={filteredActivities}
         isGoodWeather={weather.isGoodWeather}
         onDeleteActivity={handleDeleteActivity}
+        styledComponent={styledComponent}
       />
-
-      <div style={{ backgroundColor: '#22222280', marginTop: '5rem' }}>
-        <button onClick={() => localStorage.removeItem('activities')}>
+      <div style={{ backgroundColor: "#22222280", marginTop: "5rem" }}>
+        <button onClick={() => localStorage.removeItem("activities")}>
           delete LS
         </button>
         <button onClick={() => setActivities(mockData)}>reset mockData</button>
