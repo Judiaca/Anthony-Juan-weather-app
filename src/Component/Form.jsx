@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 //TODO:
 const Form = ({ onAddActivity }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [isForGoodWeather, setIsForGoodWeather] = useState(true);
 
   const handleSubmit = (event) => {
@@ -13,7 +13,7 @@ const Form = ({ onAddActivity }) => {
         isForGoodWeather: isForGoodWeather,
         id: crypto.randomUUID(),
       });
-      setName("");
+      setName('');
       setIsForGoodWeather(true);
     }
   };

@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 const List = ({ activities, isGoodWeather, onDeleteActivity }) => {
   return (
     <div>
       <h2>
-        {isGoodWeather ? "Good Weather Activities" : "Bad Weather Activities"}
+        {isGoodWeather ? 'Good Weather Activities' : 'Bad Weather Activities'}
       </h2>
       <ul>
         {activities.length ? (
@@ -15,8 +15,8 @@ const List = ({ activities, isGoodWeather, onDeleteActivity }) => {
                 Delete
               </button>
               {activity.isForGoodWeather
-                ? "is good Weather activity"
-                : "is bad Weather activity"}
+                ? 'is good Weather activity'
+                : 'is bad Weather activity'}
             </li>
           ))
         ) : (
