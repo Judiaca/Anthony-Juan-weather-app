@@ -9,8 +9,7 @@ rules: {
 
 */
 }
-import React, { useState, useEffect } from "react";
-import { uid } from "uid";
+import { useState, useEffect } from "react";
 import { mockData, uiWeatherConditionText } from "./assets/mockData";
 import { fetchData } from "./helpers/helpers.js";
 
@@ -37,7 +36,7 @@ const App = () => {
     "https://example-apis.vercel.app/api/weather/",
     ""
   );
-  //useEffect(() => {
+
   // read data from API when component mounted
   useEffect(() => {
     fetchData(selectedLocation, setWeather);
@@ -61,7 +60,6 @@ const App = () => {
     } else {
       localStorage.removeItem("activities");
     }
-    // setFilteredActivities(tempArrary);
   }, [activities]);
 
   const handleAddActivity = (activity) => {
@@ -80,7 +78,6 @@ const App = () => {
   // };
   const handleFilterActivities = () => {
     const updatedArray = activities.filter(
-      //     (activity) => activity.isForGoodWeather === weather.isGoodWeather
       (activity) => activity.isForGoodWeather === weather.isGoodWeather
       // activity.isWorkOrPersonal === selectedCategory // Assuming you have filterCriteria object with isWorkOrPersonal property
     );
@@ -144,12 +141,12 @@ const App = () => {
         onDeleteActivity={handleDeleteActivity}
         styledComponent={styledComponent}
       />
-      <div style={{ backgroundColor: "#22222280", marginTop: "5rem" }}>
+      {/* <div style={{ backgroundColor: "#22222280", marginTop: "5rem" }}>
         <button onClick={() => localStorage.removeItem("activities")}>
           delete LS
         </button>
         <button onClick={() => setActivities(mockData)}>reset mockData</button>
-      </div>
+      </div> */}
     </div>
   );
 };

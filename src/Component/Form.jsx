@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { uid } from "uid";
 
-//TODO:
 const Form = ({ onAddActivity, styledComponent }) => {
   const [name, setName] = useState("");
   const [isForGoodWeather, setIsForGoodWeather] = useState(true);
@@ -26,10 +25,8 @@ const Form = ({ onAddActivity, styledComponent }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      // style={styledComponent.flexBoxStyles, }
       style={{
         width: "fit-content",
-        // maxWidth: styledComponent.body,
         height: "fit-content",
         display: "flex",
         flexFlow: "column nowrap",

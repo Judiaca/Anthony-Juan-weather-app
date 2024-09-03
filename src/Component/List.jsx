@@ -1,11 +1,4 @@
-import React from "react";
-
-const List = ({
-  activities,
-  isGoodWeather,
-  onDeleteActivity,
-  styledComponent,
-}) => {
+const List = ({ activities, onDeleteActivity, styledComponent }) => {
   return (
     <div
       style={{
@@ -18,10 +11,7 @@ const List = ({
       <ul
         style={{
           width: "100%",
-          // maxWidth: "15rem",
-          // height: "100%",
           height: "50%",
-          // height: "fit-content",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -56,9 +46,6 @@ const List = ({
                 }
               >
                 {activity?.name}
-                {/* {activity?.isForGoodWeather
-                  ? "is good Weather activity"
-                  : "is bad Weather activity"} */}
               </li>
             </div>
           ))
