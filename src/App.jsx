@@ -46,7 +46,7 @@ const App = () => {
     const tempArrary = handleFilterActivities();
     setFilteredActivities(tempArrary);
     return () => {};
-  }, [weather]);
+  }, [weather, activities]);
 
   useEffect(() => {
     if (activities?.length > 0) {
